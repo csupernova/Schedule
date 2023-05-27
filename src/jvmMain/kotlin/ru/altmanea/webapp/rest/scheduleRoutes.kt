@@ -77,20 +77,18 @@ fun Route.scheduleRoutes(){
             val filterScheduleJson = call.receive<String>()
             val filterSchedule = Json.decodeFromString(serializerFilter, filterScheduleJson)
 
-            var scheduleitems = scheduleItemCollection.find().toList()
+            val scheduleItems: List<ScheduleItem> =
+                if (filterSchedule.group != null) scheduleItemCollection.find(ScheduleItem::group eq filterSchedule.group).toList()
+            else if(filterSchedule.teacher != null) scheduleItemCollection.find(ScheduleItem::teacher eq filterSchedule.teacher).toList()
+            else if(filterSchedule.lesson != null) scheduleItemCollection.find(ScheduleItem::lesson eq filterSchedule.lesson).toList()
+            else{
+                scheduleItemCollection.find().toList()
+            }
 
-//            for (prop in FilterSchedule::class.memberProperties){
-//                if(prop.get(filterSchedule)!=null)
-//                    scheduleitems = scheduleitems.filter{it.prop.name == prop.get(filterSchedule)}
-//            }
-            if(filterSchedule.group != null)  scheduleitems = scheduleitems.filter{it.group == filterSchedule.group}
-            if(filterSchedule.teacher != null) scheduleitems = scheduleitems.filter{it.teacher == filterSchedule.teacher}
-            if(filterSchedule.lesson != null) scheduleitems = scheduleitems.filter{it.lesson == filterSchedule.lesson}
-
-            if (scheduleitems.isEmpty()) {
+            if (scheduleItems.isEmpty()) {
                 call.respondText("No students found", status = HttpStatusCode.NotFound)
             } else {
-                call.respond(scheduleitems)
+                call.respond(scheduleItems)
             }
         }
     }

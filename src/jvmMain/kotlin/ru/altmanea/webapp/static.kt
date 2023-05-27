@@ -20,7 +20,7 @@ fun HTML.index() {
             id = "root"
             +"React will be here!!"
         }
-        script(src = "/static/webapp.js") {}
+        script(src = "/static/schedule.js") {}
     }
 }
 
