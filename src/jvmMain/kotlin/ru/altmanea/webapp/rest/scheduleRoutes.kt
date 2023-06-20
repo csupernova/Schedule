@@ -79,11 +79,11 @@ fun Route.scheduleRoutes(){
 
             val scheduleItems: List<ScheduleItem> =
                 if (filterSchedule.group != null) scheduleItemCollection.find(ScheduleItem::group eq filterSchedule.group).toList()
-            else if(filterSchedule.teacher != null) scheduleItemCollection.find(ScheduleItem::teacher eq filterSchedule.teacher).toList()
-            else if(filterSchedule.lesson != null) scheduleItemCollection.find(ScheduleItem::lesson eq filterSchedule.lesson).toList()
-            else{
-                scheduleItemCollection.find().toList()
-            }
+                else if(filterSchedule.teacher != null) scheduleItemCollection.find(ScheduleItem::teacher eq filterSchedule.teacher).toList()
+                else if(filterSchedule.lesson != null) scheduleItemCollection.find(ScheduleItem::lesson eq filterSchedule.lesson).toList()
+                else{
+                    scheduleItemCollection.find().toList()
+                }
 
             if (scheduleItems.isEmpty()) {
                 call.respondText("No students found", status = HttpStatusCode.NotFound)
